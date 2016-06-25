@@ -16,6 +16,10 @@ function search() {
 	//Use JSONP due to cross-origin
 	var baseURL = "https://en.wikipedia.org/w/api.php?action=opensearch&limit=5&format=json&search=" + $searchTerm + "&callback=?";
 
+	//Use $.ajax instead of $.getJSON
+	//$.getJSON does not provide error handling for JSONP
+	//Using $.ajax allows for providing a "timeout" that assumes the request failed if no response in that time
+	//Set an error if the request does not complete within the specified timeout period (3000ms)
 	$.ajax({
 		url: baseURL,
 		dataType: 'jsonp',
@@ -49,6 +53,8 @@ function search() {
 }
 
 //Direct user to URL to retrieve random page
+//Special:Random appended to the wikipedia URL allows for pulling a random page
+//Substituting with [Special:Random/Namespace] will allow for pulling randome page in different namespaces
 function randomSearch() {
 	var randomURL = "https://en.wikipedia.org/wiki/Special:Random";
 	window.open(randomURL);
